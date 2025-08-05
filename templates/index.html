@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>ChatBot by Ashab</title>
+  <link rel="stylesheet" href="/static/style.css">
+</head>
+<body>
+  <div class="chatbox">
+    <h2>Chat with Ashab's Bot 🤖</h2>
+    <div id="chatlog"></div>
+    <input type="text" id="userInput" placeholder="Type your message...">
+    <button onclick="sendMessage()">Send</button>
+  </div>
+
+  <script>
+    async function sendMessage() {
+      const input = document.getElementById("userInput").value;
+      const res = await fetch("/get", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/x-www-form-urlencoded"
+        },
+        body: "msg=" + encodeURIComponent(input)
+      });
+      const data = await res.json();
+      const chatlog = document.getElementById("chatlog");
+      chatlog.innerHTML += `<p><strong>You:</strong> ${input}</p>`;
+      chatlog.innerHTML += `<p><strong>Bot:</strong> ${data.response}</p>`;
+      document.getElementById("userInput").value = "";
+    }
+  </script>
+</body>
+</html>
